@@ -6,8 +6,7 @@
 
 #include <string_view>
 
-template <typename Fn>
-void TestCoutFn(Fn f, std::string_view expected)
+template <typename Fn> void TestCoutFn(Fn f, std::string_view expected)
 {
     pp::AutoCaptureCout a;
     f();

@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-namespace pp{
+namespace pp
+{
 
-AutoCaptureCout::AutoCaptureCout()
-    : m_Original(std::cout.rdbuf())
+AutoCaptureCout::AutoCaptureCout() : m_Original(std::cout.rdbuf())
 {
     std::cout.rdbuf(m_Oss.rdbuf());
 }
@@ -20,4 +20,4 @@ std::string AutoCaptureCout::str()
     return m_Oss.str();
 }
 
-}
+} // namespace pp
