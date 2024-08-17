@@ -2,12 +2,18 @@ cmake_minimum_required(VERSION 3.30.2)
 
 project(PyPrint)
 
+option(PYPRINT_INCLUDE_AS_SYSTEM "Includes headers as system, so they won't trigger warnigns" OFF)
+
 include(cmake/utils.cmake)
 
 #Declare interface library (header only)
 add_library(${PROJECT_NAME} INTERFACE)
 
-target_include_directories(${PROJECT_NAME} INTERFACE include)
+if (PYPRINT_INCLUDE_AS_SYSTEM)
+  target_include_directories(${PROJECT_NAME} SYSTEM INTERFACE include)
+else()
+  target_include_directories(${PROJECT_NAME} INTERFACE include)
+endif()
 
 #Build tests only if built as standalone project:
 if(PROJECT_IS_TOP_LEVEL)
@@ -21,6 +27,9 @@ if(PROJECT_IS_TOP_LEVEL)
     )
 
     FetchContent_MakeAvailable(Catch2)
+
+    #To enable usage of clang-tidy:
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 
     #Create target for tests:
     set(TestTargetName "PyPrintTest")

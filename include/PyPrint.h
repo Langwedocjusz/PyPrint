@@ -8,16 +8,13 @@ template <typename T>
 concept Printable = requires(T val) { std::cout << val; };
 
 template <typename T>
-concept NonPrintable = !Printable<T>;
-
-template <typename T>
 concept Iterable = requires(T val) {
     val.begin();
     val.end();
 };
 
 template <typename T>
-concept NonPrintableIterable = NonPrintable<T> && Iterable<T>;
+concept NonPrintableIterable = !Printable<T> && Iterable<T>;
 
 template <Printable P> void print(const P &p)
 {

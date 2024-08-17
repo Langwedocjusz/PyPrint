@@ -3,6 +3,7 @@
 #include "PyPrint.h"
 
 #include <array>
+#include <vector>
 
 TEST_CASE("String literal")
 {
