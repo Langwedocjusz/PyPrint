@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.30.2)
 
 project(PyPrint)
 
+include(cmake/utils.cmake)
+
 #Declare interface library (header only)
 add_library(${PROJECT_NAME} INTERFACE)
 
@@ -10,7 +12,7 @@ target_include_directories(${PROJECT_NAME} INTERFACE include)
 #Build tests only if built as standalone project:
 if(PROJECT_IS_TOP_LEVEL)
     #Fetch Catch2 for testing:
-    Include(FetchContent)
+    include(FetchContent)
 
     FetchContent_Declare(
       Catch2
@@ -27,8 +29,9 @@ if(PROJECT_IS_TOP_LEVEL)
 
     target_compile_features(${TestTargetName} PRIVATE cxx_std_20)
 
-    target_include_directories(${TestTargetName} PRIVATE ./tests)
+    enable_warnings(${TestTargetName})
 
+    target_include_directories(${TestTargetName} PRIVATE ./tests)
     target_sources(${TestTargetName}
         PRIVATE
             tests/AutoCaptureCout.cpp
