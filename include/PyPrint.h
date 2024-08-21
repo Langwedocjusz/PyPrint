@@ -156,10 +156,27 @@ void print(const std::tuple<Args...> &val)
     std::cout << ")";
 }
 
+template <typename T, typename... Args>
+void print(std::string_view fmt, const T &t, Args... args)
+{
+    const std::string_view token = "{}";
+    auto it = fmt.find(token);
+    print(fmt.substr(0, it));
+    print(t);
+    print(fmt.substr(it + token.size(), fmt.size()), args...);
+}
+
 template <typename T>
 void println(const T &p)
 {
     print(p);
+    std::cout << '\n';
+}
+
+template <typename... Args>
+void println(std::string_view fmt, Args... args)
+{
+    print(fmt, args...);
     std::cout << '\n';
 }
 

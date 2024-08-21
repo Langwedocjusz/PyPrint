@@ -145,3 +145,16 @@ TEST_CASE("Printing tuples")
         },
         "(4, 12.5, we, [4, 12])\n");
 }
+
+TEST_CASE("Formatted printing")
+{
+    TestCoutFn(
+        []() {
+            int we = 4;
+            std::vector<float> wy{3.5f, 8.9f};
+            auto wu = std::make_tuple("AAA", 48);
+
+            pp::println("WE: {}, WY: {}, WU: {}", we, wy, wu);
+        },
+        "WE: 4, WY: [3.5, 8.9], WU: (AAA, 48)\n");
+}
