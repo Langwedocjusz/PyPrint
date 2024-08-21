@@ -69,3 +69,44 @@ TEST_CASE("Printing array-likes")
         },
         "[[0, 1, 2], [3, 4, 5], [6, 7, 8]]\n");
 }
+
+TEST_CASE("Printing maps")
+{
+    TestCoutFn(
+        []() {
+            std::map<int, std::string> m{{0, "Zero"}, {1, "One"}, {2, "Two"}};
+
+            pp::println(m);
+        },
+        "{0 : Zero, 1 : One, 2 : Two}\n");
+}
+
+TEST_CASE("Printing sets")
+{
+    TestCoutFn(
+        []() {
+            std::set<char> s{'a', 'b', 'c', 'd'};
+
+            pp::println(s);
+        },
+        "{a, b, c, d}\n");
+}
+
+TEST_CASE("Printing combined containers")
+{
+    TestCoutFn(
+        []() {
+            std::vector<std::map<int, std::string>> we{{{0, "Zero"}, {1, "One"}}, {{1, "I"}, {2, "II"}, {3, "III"}}};
+
+            pp::println(we);
+        },
+        "[{0 : Zero, 1 : One}, {1 : I, 2 : II, 3 : III}]\n");
+
+    TestCoutFn(
+        []() {
+            std::set<std::vector<int>> we{{0, 1, 2}, {3, 4, 5}};
+
+            pp::println(we);
+        },
+        "{[0, 1, 2], [3, 4, 5]}\n");
+}

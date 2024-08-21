@@ -2,10 +2,45 @@
 
 #include <iostream>
 
+#include <map>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+
 namespace pp
 {
+template <typename T> struct is_map_like : std::false_type
+{
+};
+
+template <typename Key, typename Value> struct is_map_like<std::map<Key, Value>> : std::true_type
+{
+};
+
+template <typename Key, typename Value> struct is_map_like<std::unordered_map<Key, Value>> : std::true_type
+{
+};
+
+template <typename T> struct is_set_like : std::false_type
+{
+};
+
+template <typename Key> struct is_set_like<std::set<Key>> : std::true_type
+{
+};
+
+template <typename Key> struct is_set_like<std::unordered_set<Key>> : std::true_type
+{
+};
+
 template <typename T>
 concept Printable = requires(T val) { std::cout << val; };
+
+template <typename T>
+concept MapLike = is_map_like<T>::value;
+
+template <typename T>
+concept SetLike = is_set_like<T>::value;
 
 template <typename T>
 concept Iterable = requires(T val) {
@@ -14,14 +49,18 @@ concept Iterable = requires(T val) {
 };
 
 template <typename T>
-concept NonPrintableIterable = !Printable<T> && Iterable<T>;
+concept IterableNoOtherConcepts = Iterable<T> && !Printable<T> && !MapLike<T> && !SetLike<T>;
 
 template <Printable P> void print(const P &p)
 {
     std::cout << p;
 }
 
-template <NonPrintableIterable T> void print(const T &val)
+template <MapLike T> void print(const T &val);
+
+template <SetLike T> void print(const T &val);
+
+template <IterableNoOtherConcepts T> void print(const T &val)
 {
     std::cout << "[";
 
@@ -39,6 +78,55 @@ template <NonPrintableIterable T> void print(const T &val)
     }
 
     std::cout << "]";
+}
+
+template <MapLike T> void print(const T &val)
+{
+    std::cout << "{";
+
+    auto it = val.begin();
+
+    if (it != val.end())
+    {
+        const auto &[key, value] = *it;
+
+        print(key);
+        std::cout << " : ";
+        print(value);
+
+        while (++it != val.end())
+        {
+            std::cout << ", ";
+
+            const auto &[key, value] = *it;
+
+            print(key);
+            std::cout << " : ";
+            print(value);
+        }
+    }
+
+    std::cout << "}";
+}
+
+template <SetLike T> void print(const T &val)
+{
+    std::cout << "{";
+
+    auto it = val.begin();
+
+    if (it != val.end())
+    {
+        print(*it);
+
+        while (++it != val.end())
+        {
+            std::cout << ", ";
+            print(*it);
+        }
+    }
+
+    std::cout << "}";
 }
 
 template <typename T> void println(const T &p)
