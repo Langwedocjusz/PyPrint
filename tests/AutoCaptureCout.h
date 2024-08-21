@@ -7,8 +7,7 @@
 namespace pp
 {
 
-class AutoCaptureCout
-{
+class AutoCaptureCout {
   public:
     AutoCaptureCout();
     ~AutoCaptureCout();

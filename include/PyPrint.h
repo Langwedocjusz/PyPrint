@@ -9,29 +9,17 @@
 
 namespace pp
 {
-template <typename T> struct is_map_like : std::false_type
-{
-};
+template <typename T> struct is_map_like : std::false_type {};
 
-template <typename Key, typename Value> struct is_map_like<std::map<Key, Value>> : std::true_type
-{
-};
+template <typename Key, typename Value> struct is_map_like<std::map<Key, Value>> : std::true_type {};
 
-template <typename Key, typename Value> struct is_map_like<std::unordered_map<Key, Value>> : std::true_type
-{
-};
+template <typename Key, typename Value> struct is_map_like<std::unordered_map<Key, Value>> : std::true_type {};
 
-template <typename T> struct is_set_like : std::false_type
-{
-};
+template <typename T> struct is_set_like : std::false_type {};
 
-template <typename Key> struct is_set_like<std::set<Key>> : std::true_type
-{
-};
+template <typename Key> struct is_set_like<std::set<Key>> : std::true_type {};
 
-template <typename Key> struct is_set_like<std::unordered_set<Key>> : std::true_type
-{
-};
+template <typename Key> struct is_set_like<std::unordered_set<Key>> : std::true_type {};
 
 template <typename T>
 concept Printable = requires(T val) { std::cout << val; };
