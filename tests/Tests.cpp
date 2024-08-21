@@ -3,6 +3,9 @@
 #include "PyPrint.h"
 
 #include <array>
+#include <deque>
+#include <forward_list>
+#include <list>
 #include <vector>
 
 TEST_CASE("String literal")
@@ -39,7 +42,7 @@ TEST_CASE("Printing numbers")
     TestCoutFn([]() { pp::println(139.48f); }, "139.48\n");
 }
 
-TEST_CASE("Printing array-likes")
+TEST_CASE("Printing sequence containers")
 {
     TestCoutFn(
         []() {
@@ -68,6 +71,27 @@ TEST_CASE("Printing array-likes")
             pp::println(arr);
         },
         "[[0, 1, 2], [3, 4, 5], [6, 7, 8]]\n");
+
+    TestCoutFn(
+        []() {
+            std::deque<int> d{4, 5, 8, 9, 12};
+            pp::println(d);
+        },
+        "[4, 5, 8, 9, 12]\n");
+
+    TestCoutFn(
+        []() {
+            std::list<int> d{4, 5, 8, 9, 12};
+            pp::println(d);
+        },
+        "[4, 5, 8, 9, 12]\n");
+
+    TestCoutFn(
+        []() {
+            std::forward_list<int> d{4, 5, 8, 9, 12};
+            pp::println(d);
+        },
+        "[4, 5, 8, 9, 12]\n");
 }
 
 TEST_CASE("Printing maps")
@@ -109,4 +133,15 @@ TEST_CASE("Printing combined containers")
             pp::println(we);
         },
         "{[0, 1, 2], [3, 4, 5]}\n");
+}
+
+TEST_CASE("Printing tuples")
+{
+    TestCoutFn(
+        []() {
+            auto tup = std::make_tuple(4, 12.5, "we", std::vector<int>{4, 12});
+
+            pp::println(tup);
+        },
+        "(4, 12.5, we, [4, 12])\n");
 }

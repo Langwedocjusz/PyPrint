@@ -5,3 +5,4 @@ BreakBeforeBraces: Custom
 BraceWrapping:
     AfterStruct: false
     AfterClass: false
+AlwaysBreakTemplateDeclarations: true
