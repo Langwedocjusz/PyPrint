@@ -11,5 +11,6 @@ void TestCoutFn(Fn f, std::string_view expected)
 {
     pp::AutoCaptureCout a;
     f();
-    REQUIRE(a.str() == expected);
+    const bool condition = (a.str() == expected);
+    REQUIRE(condition);
 }

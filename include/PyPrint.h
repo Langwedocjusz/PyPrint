@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <string_view>
+
 namespace pp
 {
 template <typename T>
@@ -86,23 +88,21 @@ void print(const T &val)
 
     auto it = val.begin();
 
-    if (it != val.end())
-    {
+    auto printIter = [&it]() {
         const auto &[key, value] = *it;
-
         print(key);
         std::cout << " : ";
         print(value);
+    };
+
+    if (it != val.end())
+    {
+        printIter();
 
         while (++it != val.end())
         {
             std::cout << ", ";
-
-            const auto &[key, value] = *it;
-
-            print(key);
-            std::cout << " : ";
-            print(value);
+            printIter();
         }
     }
 
